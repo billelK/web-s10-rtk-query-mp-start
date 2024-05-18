@@ -23,7 +23,7 @@ const reducer = (state, action) => {
 }
 
 export default function TodoForm() {
-  const [createQuote] = useCreateQuoteMutation()
+  const [createQuote, {error}] = useCreateQuoteMutation()
   const [state, dispatch] = useReducer(reducer, initialState)
   const onChange = ({ target: { name, value } }) => {
     dispatch({ type: CHANGE_INPUT, payload: { name, value } })
@@ -33,13 +33,13 @@ export default function TodoForm() {
   }
   const onNewQuote = evt => {
     evt.preventDefault()
-    const {authorName, quoteText} = state
+    const {authorName, quoteText} = state  
     createQuote({quoteText,authorName})
     resetForm()
   }
-  // console.log(error);
   return (
     <form id="quoteForm" onSubmit={onNewQuote}>
+      <h4 style={{ color: 'red' }}>{error && error.data.message }</h4>
       <h3>New Quote Form</h3>
       <label><span>Author:</span>
         <input
